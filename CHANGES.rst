@@ -13,6 +13,8 @@ Unreleased
 -   Use modern packaging metadata with ``pyproject.toml`` instead of ``setup.cfg``.
     :pr:`1793`
 -   Use ``flit_core`` instead of ``setuptools`` as build backend.
+-   ``TemplateStream.dump`` accepts :class:`os.PathLike` objects in addition
+    to strings and file-like objects. :issue:`2039`
 
 
 Version 3.1.6

@@ -1584,7 +1584,7 @@ class TemplateStream:
 
     def dump(
         self,
-        fp: str | t.IO[bytes],
+        fp: str | os.PathLike[str] | os.PathLike[bytes] | t.IO[bytes],
         encoding: str | None = None,
         errors: str | None = "strict",
     ) -> None:
@@ -1595,10 +1595,13 @@ class TemplateStream:
         Example usage::
 
             Template('Hello {{ name }}!').stream(name='foo').dump('hello.html')
+
+        .. versionchanged:: 3.2.0
+            Accept :class:`os.PathLike` objects in addition to strings.
         """
         close = False
 
-        if isinstance(fp, str):
+        if isinstance(fp, (str, os.PathLike)):
             if encoding is None:
                 encoding = "utf-8"
 

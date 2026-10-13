@@ -249,6 +249,26 @@ class TestStreaming:
             stream = tmpl.stream()
             stream.dump(str(tmp / "dump.txt"), "utf-8")
             assert (tmp / "dump.txt").read_bytes() == b"\xe2\x9c\x93"
+
+            # PathLike support (issue #2039)
+            stream = tmpl.stream()
+            stream.dump(tmp / "dump_path.txt", "utf-8")
+            assert (tmp / "dump_path.txt").read_bytes() == b"\xe2\x9c\x93"
+
+            stream = tmpl.stream()
+            stream.dump(tmp / "dump_path_default.txt")
+            assert (tmp / "dump_path_default.txt").read_bytes() == b"\xe2\x9c\x93"
+
+            class CustomPath:
+                def __init__(self, p: Path) -> None:
+                    self._p = p
+
+                def __fspath__(self) -> str:
+                    return str(self._p)
+
+            stream = tmpl.stream()
+            stream.dump(CustomPath(tmp / "dump_custom.txt"))
+            assert (tmp / "dump_custom.txt").read_bytes() == b"\xe2\x9c\x93"
         finally:
             shutil.rmtree(tmp)
 
